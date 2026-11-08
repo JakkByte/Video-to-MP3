@@ -1,0 +1,25 @@
+Video to MP3 | JakkByte
+Third-Party Software Notices
+
+FFmpeg
+Website: https://ffmpeg.org/
+Copyright (c) FFmpeg developers
+
+This application includes an FFmpeg executable
+distributed under the GNU Lesser General Public
+License, version 3 or later (LGPLv3+).
+
+The FFmpeg executable is used to extract audio
+from video files and convert it to MP3.
+
+FFmpeg is a separate third-party component.
+It is not developed or owned by JakkByte.
+
+The LGPLv3 license text is provided in:
+licenses/LGPL-3.0.txt
+
+FFmpeg source code:
+https://ffmpeg.org/download.html
+
+Windows build provider:
+https://www.gyan.dev/ffmpeg/builds/
