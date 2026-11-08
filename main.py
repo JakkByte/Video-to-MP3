@@ -7,7 +7,6 @@ import json
 import tkinter as tk
 from tkinter import filedialog, ttk
 from pathlib import Path
-import imageio_ffmpeg
 
 APP_NAME = "Video to MP3 | JakkByte"
 BG = "#17111F"
@@ -375,7 +374,9 @@ class ConverterApp:
 
     def convert_worker(self, pending):
         try:
-            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+            ffmpeg = resource_path("ffmpeg.exe")
+            if not os.path.isfile(ffmpeg):
+                raise FileNotFoundError("FFmpeg executable not found: " + ffmpeg)
         except Exception as exc:
             self.messages.put(("fatal", str(exc), len(pending)))
             return
