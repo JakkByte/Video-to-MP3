@@ -4,6 +4,10 @@
 
 Video to MP3 is a simple desktop application developed by **JakkByte**. Extract audio from multiple video files with an easy-to-use interface, batch conversion, and multilingual support.
 
+## 📸 Screenshot
+
+![Video to MP3 - Application Interface](screenshot.png)
+
 ## ✨ Features
 
 - 🎬 Convert video files to MP3 audio
@@ -31,7 +35,7 @@ Your selected language is saved automatically.
 
 ## 📥 Download & Installation
 
-1. Open the **Releases** section of this repository.
+1. Open the **[Releases](https://github.com/JakkByte/Video-to-MP3/releases)** section of this repository.
 2. Download `Video-to-MP3.exe` from the latest release.
 3. Run the application on Windows.
 
