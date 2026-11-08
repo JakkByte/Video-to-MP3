@@ -1,0 +1,35 @@
+FFmpeg Source Code Information
+Video to MP3 | JakkByte
+
+FFmpeg version:
+n9.0.2-48-gd4070a14ce-20261107
+
+FFmpeg source revision:
+d4070a14ce
+
+Source code:
+https://github.com/FFmpeg/FFmpeg/tree/d4070a14ce
+
+FFmpeg official website:
+https://ffmpeg.org/
+
+Windows binary provider:
+https://www.gyan.dev/ffmpeg/builds/
+
+License reported by the bundled FFmpeg executable:
+GNU Lesser General Public License,
+version 3 or later (LGPLv3+).
+
+FFmpeg Windows build project:
+https://github.com/BtbN/FFmpeg-Builds
+
+Build scripts and dependencies:
+https://github.com/BtbN/FFmpeg-Builds/tree/master/scripts.d
+
+Build provider releases:
+https://github.com/BtbN/FFmpeg-Builds/releases
+
+Note:
+This reference identifies the FFmpeg source revision.
+It does not include the source code of external libraries
+or all materials required to reproduce the Windows build.
