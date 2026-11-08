@@ -1,3 +1,4 @@
+
 FFmpeg Source Code Information
 Video to MP3 | JakkByte
 
@@ -7,14 +8,21 @@ n9.0.2-48-gd4070a14ce-20261107
 FFmpeg source revision:
 d4070a14ce
 
-Source code:
+FFmpeg source code:
 https://github.com/FFmpeg/FFmpeg/tree/d4070a14ce
 
 FFmpeg official website:
 https://ffmpeg.org/
 
 Windows binary provider:
-https://www.gyan.dev/ffmpeg/builds/
+BtbN FFmpeg Builds
+https://github.com/BtbN/FFmpeg-Builds
+
+Exact binary release:
+https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-11-07-12-47
+
+Binary package:
+ffmpeg-n9.0.2-48-gd4070a14ce-win64-lgpl-9.0.zip
 
 License reported by the bundled FFmpeg executable:
 GNU Lesser General Public License,
@@ -23,13 +31,30 @@ version 3 or later (LGPLv3+).
 FFmpeg Windows build project:
 https://github.com/BtbN/FFmpeg-Builds
 
-Build scripts and dependencies:
+Build scripts and dependency information:
 https://github.com/BtbN/FFmpeg-Builds/tree/master/scripts.d
 
 Build provider releases:
 https://github.com/BtbN/FFmpeg-Builds/releases
 
-Note:
-This reference identifies the FFmpeg source revision.
-It does not include the source code of external libraries
-or all materials required to reproduce the Windows build.
+FFmpeg executable SHA-256:
+71AC0A64A4E3E0CAAF7A8C25C7E73D161AC1B269CCA930D207E89E1B23959DFB
+
+Third-party components:
+The FFmpeg binary may include external libraries
+distributed under their respective licenses.
+
+Source availability notice:
+The links above identify the FFmpeg source revision,
+the Windows binary provider, and the build project.
+
+These references do not independently guarantee
+availability of the complete corresponding source
+code for all external libraries or all materials
+needed to reproduce the distributed binary.
+
+FFmpeg and its third-party components retain
+their respective licenses.
+
+The Video to MP3 application is distributed
+under the MIT License.
