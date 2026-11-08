@@ -4,6 +4,7 @@ import subprocess
 import threading
 import queue
 import json
+import webbrowser
 import tkinter as tk
 from tkinter import filedialog, ttk
 from pathlib import Path
@@ -47,7 +48,16 @@ TRANSLATIONS = {'en': {'queue': 'CONVERSION QUEUE',
         'error': 'Failed: {name} — {detail}',
         'fatal': 'FFmpeg unavailable: {detail}',
         'finished': 'Finished: {ok} converted, {fail} failed, {skip} skipped.',
-        'footer': 'VIDEO TO MP3  •  DEVELOPED BY JAKKBYTE'},
+        'footer': 'VIDEO TO MP3  •  DEVELOPED BY JAKKBYTE',
+        'about': 'ABOUT / LICENSES',
+        'about_title': 'ABOUT / LICENSES',
+        'third_party': 'Third-party software',
+        'about_description': 'This app uses FFmpeg to convert video audio to MP3.',
+        'ffmpeg_license': 'FFmpeg is licensed under LGPLv3 or later.',
+        'license_files': 'View license files',
+        'ffmpeg_site': 'FFmpeg website',
+        'close': 'Close',
+        'license_missing': 'License files were not found in this build.'},
  'pt': {'queue': 'FILA DE CONVERSÃO',
         'files': '{n} arquivos',
         'video': 'ARQUIVO DE VÍDEO',
@@ -75,7 +85,16 @@ TRANSLATIONS = {'en': {'queue': 'CONVERSION QUEUE',
         'error': 'Falha: {name} — {detail}',
         'fatal': 'FFmpeg indisponível: {detail}',
         'finished': 'Finalizado: {ok} convertidos, {fail} falhas, {skip} ignorados.',
-        'footer': 'VIDEO TO MP3  •  DESENVOLVIDO POR JAKKBYTE'},
+        'footer': 'VIDEO TO MP3  •  DESENVOLVIDO POR JAKKBYTE',
+        'about': 'SOBRE / LICENÇAS',
+        'about_title': 'SOBRE / LICENÇAS',
+        'third_party': 'Software de terceiros',
+        'about_description': 'Este aplicativo utiliza o FFmpeg para converter áudio de vídeos em MP3.',
+        'ffmpeg_license': 'O FFmpeg é licenciado sob LGPLv3 ou posterior.',
+        'license_files': 'Ver arquivos de licença',
+        'ffmpeg_site': 'Site do FFmpeg',
+        'close': 'Fechar',
+        'license_missing': 'Arquivos de licença não encontrados nesta versão.'},
  'es': {'queue': 'COLA DE CONVERSIÓN',
         'files': '{n} archivos',
         'video': 'ARCHIVO DE VIDEO',
@@ -103,7 +122,16 @@ TRANSLATIONS = {'en': {'queue': 'CONVERSION QUEUE',
         'error': 'Error: {name} — {detail}',
         'fatal': 'FFmpeg no disponible: {detail}',
         'finished': 'Finalizado: {ok} convertidos, {fail} fallidos, {skip} omitidos.',
-        'footer': 'VIDEO TO MP3  •  DESARROLLADO POR JAKKBYTE'},
+        'footer': 'VIDEO TO MP3  •  DESARROLLADO POR JAKKBYTE',
+        'about': 'ACERCA DE / LICENCIAS',
+        'about_title': 'ACERCA DE / LICENCIAS',
+        'third_party': 'Software de terceros',
+        'about_description': 'Esta aplicación utiliza FFmpeg para convertir audio de videos a MP3.',
+        'ffmpeg_license': 'FFmpeg se distribuye bajo LGPLv3 o posterior.',
+        'license_files': 'Ver archivos de licencia',
+        'ffmpeg_site': 'Sitio web de FFmpeg',
+        'close': 'Cerrar',
+        'license_missing': 'No se encontraron los archivos de licencia.'},
  'fr': {'queue': 'FILE DE CONVERSION',
         'files': '{n} fichiers',
         'video': 'FICHIER VIDÉO',
@@ -131,7 +159,16 @@ TRANSLATIONS = {'en': {'queue': 'CONVERSION QUEUE',
         'error': 'Échec : {name} — {detail}',
         'fatal': 'FFmpeg indisponible : {detail}',
         'finished': 'Terminé : {ok} convertis, {fail} échecs, {skip} ignorés.',
-        'footer': 'VIDEO TO MP3  •  DÉVELOPPÉ PAR JAKKBYTE'},
+        'footer': 'VIDEO TO MP3  •  DÉVELOPPÉ PAR JAKKBYTE',
+        'about': 'À PROPOS / LICENCES',
+        'about_title': 'À PROPOS / LICENCES',
+        'third_party': 'Logiciels tiers',
+        'about_description': "Cette application utilise FFmpeg pour convertir l'audio des vidéos en MP3.",
+        'ffmpeg_license': 'FFmpeg est distribué sous LGPLv3 ou ultérieure.',
+        'license_files': 'Voir les fichiers de licence',
+        'ffmpeg_site': 'Site de FFmpeg',
+        'close': 'Fermer',
+        'license_missing': 'Fichiers de licence introuvables.'},
  'de': {'queue': 'KONVERTIERUNGSLISTE',
         'files': '{n} Dateien',
         'video': 'VIDEODATEI',
@@ -159,7 +196,16 @@ TRANSLATIONS = {'en': {'queue': 'CONVERSION QUEUE',
         'error': 'Fehler: {name} — {detail}',
         'fatal': 'FFmpeg nicht verfügbar: {detail}',
         'finished': 'Fertig: {ok} konvertiert, {fail} Fehler, {skip} übersprungen.',
-        'footer': 'VIDEO TO MP3  •  ENTWICKELT VON JAKKBYTE'}}
+        'footer': 'VIDEO TO MP3  •  ENTWICKELT VON JAKKBYTE',
+        'about': 'INFO / LIZENZEN',
+        'about_title': 'INFO / LIZENZEN',
+        'third_party': 'Software von Drittanbietern',
+        'about_description': 'Diese App verwendet FFmpeg, um Video-Audio in MP3 umzuwandeln.',
+        'ffmpeg_license': 'FFmpeg steht unter LGPLv3 oder neuer.',
+        'license_files': 'Lizenzdateien anzeigen',
+        'ffmpeg_site': 'FFmpeg-Website',
+        'close': 'Schließen',
+        'license_missing': 'Lizenzdateien wurden nicht gefunden.'}}
 LANG_NAMES = {'en':'English', 'pt':'Português (Brasil)', 'es':'Español', 'fr':'Français', 'de':'Deutsch'}
 
 
@@ -222,6 +268,7 @@ class ConverterApp:
         self.remove_btn.config(text=self.t("remove"))
         self.convert_btn.config(text=self.t("convert"))
         self.footer.config(text=self.t("footer"))
+        self.about_btn.config(text=self.t("about"))
         status_keys = {"Waiting": "waiting", "Running": "running", "Converting...": "running",
                        "Completed": "completed", "Failed": "failed", "Skipped": "skipped"}
         for entry in self.items:
@@ -247,6 +294,13 @@ class ConverterApp:
                                             values=list(LANG_NAMES.values()), font=("Segoe UI", 9))
         self.language_choice.set(LANG_NAMES[self.lang])
         self.language_choice.pack(side="right")
+        self.about_btn = tk.Button(
+            langrow, text=self.t("about"), command=self.show_about,
+            bg=BG, fg=PURPLE, activebackground=BG, activeforeground=TEXT,
+            relief="flat", bd=0, cursor="hand2", font=("Segoe UI", 9),
+            padx=6, pady=3
+        )
+        self.about_btn.pack(side="left")
         self.language_choice.bind("<<ComboboxSelected>>",
                                   lambda event: self.change_language(self.language_choice.get()))
         tk.Frame(outer, bg=BORDER, height=1).pack(fill="x", pady=(8, 10))
@@ -313,6 +367,56 @@ class ConverterApp:
         self.footer = tk.Label(outer, text=self.t("footer"),
                                font=("Segoe UI", 8), fg=PURPLE, bg=BG)
         self.footer.pack()
+
+    def show_about(self):
+        dialog = tk.Toplevel(self.root)
+        dialog.title(self.t("about_title"))
+        dialog.geometry("520x390")
+        dialog.resizable(False, False)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        dialog.grab_set()
+
+        content = tk.Frame(dialog, bg=BG, padx=24, pady=20)
+        content.pack(fill="both", expand=True)
+        tk.Label(content, text="VIDEO TO MP3", font=("Segoe UI", 19, "bold"),
+                 bg=BG, fg=TEXT).pack(anchor="w")
+        tk.Label(content, text="JAKKBYTE  •  v1.0.0",
+                 font=("Segoe UI", 10), bg=BG, fg=PURPLE).pack(anchor="w", pady=(2, 16))
+        tk.Label(content, text=self.t("third_party"),
+                 font=("Segoe UI", 11, "bold"), bg=BG, fg=TEXT).pack(anchor="w")
+        tk.Label(content, text=self.t("about_description"),
+                 font=("Segoe UI", 10), bg=BG, fg=MUTED,
+                 justify="left", wraplength=460).pack(anchor="w", pady=(8, 5))
+        tk.Label(content, text=self.t("ffmpeg_license"),
+                 font=("Segoe UI", 10), bg=BG, fg=MUTED).pack(anchor="w")
+
+        links = tk.Frame(content, bg=BG)
+        links.pack(anchor="w", pady=(17, 8))
+        tk.Button(links, text=self.t("license_files"), command=self.open_licenses,
+                  bg=CARD, fg=PURPLE, activebackground=CARD,
+                  activeforeground=TEXT, relief="flat", cursor="hand2",
+                  font=("Segoe UI", 9), padx=12, pady=7).pack(side="left")
+        tk.Button(links, text=self.t("ffmpeg_site"),
+                  command=lambda: webbrowser.open("https://ffmpeg.org/"),
+                  bg=CARD, fg=PURPLE, activebackground=CARD,
+                  activeforeground=TEXT, relief="flat", cursor="hand2",
+                  font=("Segoe UI", 9), padx=12, pady=7).pack(side="left", padx=(9, 0))
+        tk.Button(content, text=self.t("close"), command=dialog.destroy,
+                  bg=GREEN, fg="#101010", relief="flat", cursor="hand2",
+                  font=("Segoe UI", 10, "bold"), padx=18, pady=7).pack(anchor="e", side="bottom")
+
+    def open_licenses(self):
+        folder = resource_path("licenses")
+        if os.path.isdir(folder):
+            if os.name == "nt":
+                os.startfile(folder)
+            else:
+                webbrowser.open(Path(folder).as_uri())
+        else:
+            from tkinter import messagebox
+            messagebox.showwarning(self.t("about_title"), self.t("license_missing"),
+                                   parent=self.root)
 
     def button(self, parent, text, command, bg, fg):
         return tk.Button(parent, text=text, command=command, bg=bg, fg=fg, activebackground=bg,
