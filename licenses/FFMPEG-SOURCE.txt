@@ -32,7 +32,7 @@ FFmpeg Windows build project:
 https://github.com/BtbN/FFmpeg-Builds
 
 Build scripts and dependency information:
-https://github.com/BtbN/FFmpeg-Builds/tree/master/scripts.d
+https://github.com/BtbN/FFmpeg-Builds/tree/c63bb30/scripts.d
 
 Build provider releases:
 https://github.com/BtbN/FFmpeg-Builds/releases
